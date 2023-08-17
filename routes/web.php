@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,19 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+Route::get('test', function () {
+    return view('test');
+});
+Route::get('test1', function () {
+    return view('test1');
+});
+Route::get('product', function (Request $request) {
+    echo '<h1>product</h1>' . $request->query('name');
+});
+
+//http://127.0.0.1:8000/product/detail/1
+//http://127.0.0.1:8000/product/detail/1/hihi
+Route::get('product/detail/{id}/{name?}', function ($id, $name = '') {
+    echo 'Product detail ' . $id . $name;
 });
