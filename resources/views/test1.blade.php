@@ -21,11 +21,11 @@
     @php
         $arrayAnimals = ['Cho', 'Meo', 'Ca', 'Gau', 'Cuu'];
     @endphp
-    @foreach ($arrayAnimals as $key => $animal)
-        @if (($key + 1) % 2 === 0)
-            {!! $key + 1 . ".<span style='color:  red '  >" . $animal . '</span><br>' !!}
-        @else
-            {!! $key + 1 . ".<span style='color:  green '  >" . $animal . '</span><br>' !!}
+    @foreach ($arrayAnimals as $animal)
+        @if ($loop->even)
+            {!! $loop->iteration . ".<span style='color:  red '  >" . $animal . '</span><br>' !!}
+        @elseif ($loop->odd)
+            {!! $loop->iteration . ".<span style='color:  green '  >" . $animal . '</span><br>' !!}
         @endif
     @endforeach
     <h1>TEST</h1>

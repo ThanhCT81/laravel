@@ -17,8 +17,20 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('test', function () {
-    return view('test');
+Route::get('home', function () {
+    return view('client.pages.home');
+});
+Route::get('template', function () {
+    return view('client.layout.master');
+});
+Route::get('master', function () {
+    return view('client.layout.master');
+});
+Route::get('product1', function () {
+    return view('client.pages.product.list');
+});
+Route::get('blog/detail', function () {
+    return view('client.pages.blog.detail');
 });
 Route::get('test1', function () {
     return view('test1');
