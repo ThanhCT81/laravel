@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,10 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-Route::get('admin/product',function(){
-    return view('admin.pages.product.list');
-});
-Route::get('admin/user',function(){
-    return view('admin.pages.user.list');
-});
-require __DIR__.'/auth.php';
+
+require __DIR__ . '/auth.php';
+Route::get('admin/product', [ProductController::class, 'index']);
+Route::get('admin/user', [UserController::class, 'index']);
