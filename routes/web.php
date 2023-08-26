@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ProductCategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ProfileController;
@@ -31,5 +32,10 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
-Route::get('admin/product', [ProductController::class, 'index']);
-Route::get('admin/user', [UserController::class, 'index']);
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('product', [ProductController::class, 'index'])->name('product.list');
+    Route::get('user', [UserController::class, 'index'])->name('user.list');
+    Route::get('product_category', [ProductCategoryController::class, 'index'])->name('product_category.list');
+    Route::get('product_category/add', [ProductCategoryController::class, 'create'])->name('product_category.add');
+});
