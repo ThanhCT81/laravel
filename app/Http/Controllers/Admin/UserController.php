@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 class UserController extends Controller
 {
     public function index()
-    {   
+    {
         $users = DB::select('select * from users');
         //pass variable to view
         //Cach 1

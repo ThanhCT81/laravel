@@ -30,21 +30,29 @@
                             </div>
                             <!-- /.card-header -->
                             <!-- form start -->
-                            <form role="form">
+                            <form role="form" method="post" action="{{ route('admin.product_category.store') }}">
                                 @csrf
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="name">Name</label>
-                                        <input type="text" class="form-control" id="exampleInputEmail1"
-                                            placeholder="Enter name">
+                                        <input name="name" type="text" class="form-control  " id="exampleInputEmail1"
+                                            placeholder="Enter name" value="{{ old('name') }}">
+                                        @error('name')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <div class="form-group">
                                         <label>Status</label>
-                                        <select class="custom-select">
-                                            <option>---Please Select---</option>
-                                            <option>Show</option>
-                                            <option>Hide</option>
+                                        <select class="custom-select" name="status">
+                                            <option value="">---Please Select---</option>
+                                            <option {{ old('status') === '1' ? 'selected' : '' }} value="1">Show
+                                            </option>
+                                            <option {{ old('status') === '0' ? 'selected' : '' }} value="0">Hide
+                                            </option>
                                         </select>
+                                        @error('status')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <!-- /.card-body -->
 

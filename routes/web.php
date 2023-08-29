@@ -38,4 +38,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('user', [UserController::class, 'index'])->name('user.list');
     Route::get('product_category', [ProductCategoryController::class, 'index'])->name('product_category.list');
     Route::get('product_category/add', [ProductCategoryController::class, 'create'])->name('product_category.add');
+    Route::post('product_categories/store', [ProductCategoryController::class, 'store'])->name('product_category.store');
+    Route::get('product_category/detail/{id}', [ProductCategoryController::class, 'detail'])->name('product_category.detail');
 });
