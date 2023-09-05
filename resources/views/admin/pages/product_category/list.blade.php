@@ -42,6 +42,7 @@
                                             <th>Name</th>
                                             <th>Status</th>
                                             <th>Created At</th>
+                                            <th>Updated At</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -57,8 +58,12 @@
                                                     </div>
                                                 </td>
                                                 <td>{{ $productCategory->created_at }}</td>
-                                                <td><a class="btn-primay"
+                                                <td>{{ $productCategory->updated_at }}</td>
+                                                <td>
+                                                    <a class="btn btn-primay"
                                                         href="{{ route('admin.product_category.detail', ['id' => $productCategory->id]) }}">Detail</a>
+                                                    <a onclick="return confirm('Are You Sure???')" class="btn btn-danger"
+                                                        href="{{ route('admin.product_category.destroy', ['id' => $productCategory->id]) }}">Delete</a>
                                                 </td>
                                             </tr>
                                         @empty
