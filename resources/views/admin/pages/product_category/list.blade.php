@@ -28,10 +28,25 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12">
+
                         <div class="card">
-                            <div class="card-header d-flex justify-content-around">
-                                <h3 class="card-title">Product List</h3>
-                                <a class="btn btn-primary " href="{{ route('admin.product_category.add') }}">Add</a>
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <form action="" method="get">
+                                            <input type="text" name="keyword" placeholder="Search...">
+                                            <button type="submit">Search</button>
+                                            <select name="">
+                                                <option value="">---Please Select---</option>
+                                                <option value="lasted">Lasted</option>
+                                                <option value="oldest">Oldest</option>
+                                            </select>
+                                        </form>
+                                    </div>
+                                    <div class="col-md-6 text-right">
+                                        <a class="btn btn-primary " href="{{ route('admin.product_category.add') }}">Add</a>
+                                    </div>
+                                </div>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
@@ -60,7 +75,7 @@
                                                 <td>{{ $productCategory->created_at }}</td>
                                                 <td>{{ $productCategory->updated_at }}</td>
                                                 <td>
-                                                    <a class="btn btn-primay"
+                                                    <a class="btn btn-primary"
                                                         href="{{ route('admin.product_category.detail', ['id' => $productCategory->id]) }}">Detail</a>
                                                     <a onclick="return confirm('Are You Sure???')" class="btn btn-danger"
                                                         href="{{ route('admin.product_category.destroy', ['id' => $productCategory->id]) }}">Delete</a>
@@ -76,9 +91,11 @@
                             <div class="card-footer clearfix">
                                 <ul class="pagination pagination-sm m-0 float-right">
                                     <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    @for ($i = 1; $i <= $totalPage; $i++)
+                                        <li class="page-item {{ $i == $currentPage ? 'active' : '' }}"><a class="page-link"
+                                                href="?page={{ $i }}">{{ $i }}</a>
+                                        </li>
+                                    @endfor
                                     <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
                                 </ul>
                             </div>
