@@ -16,17 +16,28 @@ class ProductCategoryController extends Controller
     {
         //$page = $_GET['page'] ?? 1;
         $keyword = $request->keyword;
+        $orderBy = $request->orderBy ?? 'lasted';
+        $sort = $orderBy === 'lasted' ? 'desc' : 'asc';
+
+
         // $result = DB::select('select * from product_categories where name like ? order by created_at desc', ['%' . $keyword . '%']);
         $page = $request->page ?? 1;
         $itemPerPage = 2;
         $offset = ($page - 1) * $itemPerPage;
+
+        $sqlSelect = 'select * from product_categories ';
+        $paramsBinding = [];
+        if (!empty($keyword)) {
+            $sqlSelect .= 'where name like ? ';
+            $paramsBinding[] = '%' . $keyword . '%';
+        }
+        $sqlSelect .= 'order by created_at ' . $sort;
+        $sqlSelect .=  ' limit ?,?';
+        $paramsBinding[] = $offset;
+        $paramsBinding[] = $itemPerPage;
         $productCategories = DB::select(
-            'select * from product_categories where name like ? order by created_at desc limit ?,?',
-            [
-                '%' . $keyword . '%',
-                $offset,
-                $itemPerPage
-            ]
+            $sqlSelect,
+            $paramsBinding
         );
         //$productCategories = DB::select('select * from product_categories');
         $totalRecords = DB::select('select count(*) as sum from product_categories')[0]->sum;
@@ -36,7 +47,9 @@ class ProductCategoryController extends Controller
             [
                 'productCategories' => $productCategories,
                 'totalPage' => $totalPage,
-                'currentPage' => $page
+                'currentPage' => $page,
+                'keyword' => $keyword,
+                'sortBy' => $orderBy
             ]
         );
     }

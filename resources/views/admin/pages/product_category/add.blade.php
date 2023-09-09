@@ -41,6 +41,7 @@
                                             <div class="alert alert-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
+
                                     <div class="form-group">
                                         <label>Status</label>
                                         <select class="custom-select" name="status">

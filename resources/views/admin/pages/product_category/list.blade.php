@@ -34,13 +34,16 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <form action="" method="get">
-                                            <input type="text" name="keyword" placeholder="Search...">
-                                            <button type="submit">Search</button>
-                                            <select name="">
+                                            <input type="text" value="{{ $keyword }}" name="keyword"
+                                                placeholder="Search...">
+                                            <select name="orderBy">
                                                 <option value="">---Please Select---</option>
-                                                <option value="lasted">Lasted</option>
-                                                <option value="oldest">Oldest</option>
+                                                <option {{ $sortBy === 'lasted' ? 'selected' : '' }} value="lasted">Lasted
+                                                </option>
+                                                <option {{ $sortBy === 'oldest' ? 'selected' : '' }} value="oldest">Oldest
+                                                </option>
                                             </select>
+                                            <button type="submit">Search</button>
                                         </form>
                                     </div>
                                     <div class="col-md-6 text-right">

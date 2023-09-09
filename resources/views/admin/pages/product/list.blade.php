@@ -6,14 +6,19 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Simple Tables</h1>
+                        <h1>Product Category List</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Simple Tables</li>
+                            <li class="breadcrumb-item active">Product List</li>
                         </ol>
                     </div>
+                    @if (session('message'))
+                        <div class="col-sm-12 alert alert-success">
+                            {{ session('message') }}
+                        </div>
+                    @endif
                 </div>
             </div><!-- /.container-fluid -->
         </section>
@@ -23,9 +28,27 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12">
+
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Product List</h3>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <form action="" method="get">
+                                            <input type="text" name="keyword" placeholder="Search...">
+                                            <select name="orderBy">
+                                                <option value="">---Please Select---</option>
+                                                <option value="lasted">Lasted
+                                                </option>
+                                                <option value="oldest">Oldest
+                                                </option>
+                                            </select>
+                                            <button type="submit">Search</button>
+                                        </form>
+                                    </div>
+                                    <div class="col-md-6 text-right">
+                                        <a class="btn btn-primary " href="{{ route('admin.product.create') }}">Add</a>
+                                    </div>
+                                </div>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
@@ -33,62 +56,48 @@
                                     <thead>
                                         <tr>
                                             <th style="width: 10px">#</th>
-                                            <th>Task</th>
-                                            <th>Progress</th>
-                                            <th style="width: 40px">Label</th>
+                                            <th>Name</th>
+                                            <th>Status</th>
+                                            <th>Created At</th>
+                                            <th>Updated At</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1.</td>
-                                            <td>Update software</td>
-                                            <td>
-                                                <div class="progress progress-xs">
-                                                    <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                                                </div>
-                                            </td>
-                                            <td><span class="badge bg-danger">55%</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>2.</td>
-                                            <td>Clean database</td>
-                                            <td>
-                                                <div class="progress progress-xs">
-                                                    <div class="progress-bar bg-warning" style="width: 70%"></div>
-                                                </div>
-                                            </td>
-                                            <td><span class="badge bg-warning">70%</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>3.</td>
-                                            <td>Cron job running</td>
-                                            <td>
-                                                <div class="progress progress-xs progress-striped active">
-                                                    <div class="progress-bar bg-primary" style="width: 30%"></div>
-                                                </div>
-                                            </td>
-                                            <td><span class="badge bg-primary">30%</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>4.</td>
-                                            <td>Fix and squish bugs</td>
-                                            <td>
-                                                <div class="progress progress-xs progress-striped active">
-                                                    <div class="progress-bar bg-success" style="width: 90%"></div>
-                                                </div>
-                                            </td>
-                                            <td><span class="badge bg-success">90%</span></td>
-                                        </tr>
-                                    </tbody>
+                                    {{-- <tbody>
+                                        @forelse ($productCategories as $productCategory)
+                                            <tr>
+                                                <td>{{ $loop->iteration }} </td>
+                                                <td>{{ $productCategory->name }} </td>
+                                                <td>
+                                                    <div
+                                                        class="{{ $productCategory->status ? 'btn btn-success' : 'btn btn-danger' }}">
+                                                        {{ $productCategory->status ? 'Show' : 'Hide' }}
+                                                    </div>
+                                                </td>
+                                                <td>{{ $productCategory->created_at }}</td>
+                                                <td>{{ $productCategory->updated_at }}</td>
+                                                <td>
+                                                    <a class="btn btn-primary"
+                                                        href="{{ route('admin.product_category.detail', ['id' => $productCategory->id]) }}">Detail</a>
+                                                    <a onclick="return confirm('Are You Sure???')" class="btn btn-danger"
+                                                        href="{{ route('admin.product_category.destroy', ['id' => $productCategory->id]) }}">Delete</a>
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <td colspan="4">No Data</td>
+                                        @endforelse
+                                    </tbody> --}}
                                 </table>
                             </div>
                             <!-- /.card-body -->
                             <div class="card-footer clearfix">
                                 <ul class="pagination pagination-sm m-0 float-right">
                                     <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    {{-- @for ($i = 1; $i <= $totalPage; $i++)
+                                        <li class="page-item {{ $i == $currentPage ? 'active' : '' }}"><a class="page-link"
+                                                href="?page={{ $i }}">{{ $i }}</a>
+                                        </li>
+                                    @endfor --}}
                                     <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
                                 </ul>
                             </div>
