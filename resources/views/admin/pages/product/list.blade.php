@@ -6,7 +6,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Product Category List</h1>
+                        <h1>Product List</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -58,48 +58,44 @@
                                             <th style="width: 10px">#</th>
                                             <th>Name</th>
                                             <th>Status</th>
+                                            <th>Short Description</th>
                                             <th>Created At</th>
                                             <th>Updated At</th>
-                                            <th>Action</th>
+                                            {{-- <th>Action</th> --}}
                                         </tr>
                                     </thead>
-                                    {{-- <tbody>
-                                        @forelse ($productCategories as $productCategory)
+                                    <tbody>
+                                        @forelse ($products as $product)
                                             <tr>
                                                 <td>{{ $loop->iteration }} </td>
-                                                <td>{{ $productCategory->name }} </td>
+                                                <td>{{ $product->name }} </td>
                                                 <td>
                                                     <div
-                                                        class="{{ $productCategory->status ? 'btn btn-success' : 'btn btn-danger' }}">
-                                                        {{ $productCategory->status ? 'Show' : 'Hide' }}
+                                                        class="{{ $product->status ? 'btn btn-success' : 'btn btn-danger' }}">
+                                                        {{ $product->status ? 'Show' : 'Hide' }}
                                                     </div>
                                                 </td>
-                                                <td>{{ $productCategory->created_at }}</td>
-                                                <td>{{ $productCategory->updated_at }}</td>
-                                                <td>
+                                                <td>{!! $product->short_description !!} </td>
+                                                <td>{{ $product->created_at }}</td>
+                                                <td>{{ $product->updated_at }}</td>
+                                                {{-- <td>
                                                     <a class="btn btn-primary"
                                                         href="{{ route('admin.product_category.detail', ['id' => $productCategory->id]) }}">Detail</a>
                                                     <a onclick="return confirm('Are You Sure???')" class="btn btn-danger"
                                                         href="{{ route('admin.product_category.destroy', ['id' => $productCategory->id]) }}">Delete</a>
-                                                </td>
+                                                </td> --}}
                                             </tr>
                                         @empty
-                                            <td colspan="4">No Data</td>
+                                            <tr>
+                                                <td colspan="6">No Data</td>
+                                            </tr>
                                         @endforelse
-                                    </tbody> --}}
+                                    </tbody>
                                 </table>
                             </div>
                             <!-- /.card-body -->
                             <div class="card-footer clearfix">
-                                <ul class="pagination pagination-sm m-0 float-right">
-                                    <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                                    {{-- @for ($i = 1; $i <= $totalPage; $i++)
-                                        <li class="page-item {{ $i == $currentPage ? 'active' : '' }}"><a class="page-link"
-                                                href="?page={{ $i }}">{{ $i }}</a>
-                                        </li>
-                                    @endfor --}}
-                                    <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
-                                </ul>
+                                {{ $products->links() }}
                             </div>
                         </div>
                         <!-- /.card -->
