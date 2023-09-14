@@ -26,17 +26,18 @@
                         <!-- general form elements -->
                         <div class="card card-primary">
                             <div class="card-header">
-                                <h3 class="card-title">Add</h3>
+                                <h3 class="card-title">EDIT</h3>
                             </div>
                             <!-- /.card-header -->
                             <!-- form start -->
-                            <form role="form" enctype="multipart/form-data" method="post" action="{{ route('admin.product.store') }}">
+                            <form role="form" enctype="multipart/form-data" method="post"
+                                action="{{ route('admin.product.store') }}">
                                 @csrf
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="name">Name</label>
                                         <input name="name" type="text" class="form-control  " id="name"
-                                            placeholder="Enter name" value="{{ old('name') }}">
+                                            placeholder="Enter name" value="{{ $product->name }}">
                                         @error('name')
                                             <div class="alert alert-danger">{{ $message }}</div>
                                         @enderror
@@ -44,7 +45,7 @@
                                     <div class="form-group">
                                         <label for="slug">Slug</label>
                                         <input name="slug" type="text" class="form-control  " id="slug"
-                                            placeholder="a-b-c" value="{{ old('slug') }}">
+                                            placeholder="a-b-c" value="{{ $product->slug }}">
                                         @error('slug')
                                             <div class="alert alert-danger">{{ $message }}</div>
                                         @enderror
@@ -52,7 +53,7 @@
                                     <div class="form-group">
                                         <label for="price">Price</label>
                                         <input name="price" type="number" class="form-control  " id="exampleInputEmail1"
-                                            placeholder="Enter Price" value="{{ old('price') }}">
+                                            placeholder="Enter Price" value="{{ $product->price }}">
                                         @error('price')
                                             <div class="alert alert-danger">{{ $message }}</div>
                                         @enderror
@@ -61,7 +62,7 @@
                                         <label for="discount_price	">Discount Price</label>
                                         <input name="discount_price" type="number" class="form-control  "
                                             id="exampleInputEmail1" placeholder="Enter Discount Price"
-                                            value="{{ old('discount_price') }}">
+                                            value="{{ $product->discount_price }}">
                                         @error('discount_price')
                                             <div class="alert alert-danger">{{ $message }}</div>
                                         @enderror
@@ -69,7 +70,7 @@
                                     <div class="form-group">
                                         <label for="short_description">Short Description</label>
                                         <textarea name="short_description" type="text" class="form-control " rows="3" id="short_description"
-                                            placeholder="Enter Short Description" value="{{ old('short_description') }}"></textarea>
+                                            placeholder="Enter Short Description" value="{{ old('short_description') }}">{{ $product->short_description }}</textarea>
                                         @error('short_description')
                                             <div class="alert alert-danger">{{ $message }}</div>
                                         @enderror
@@ -77,7 +78,7 @@
                                     <div class="form-group">
                                         <label for="qty">Quantity</label>
                                         <input name="qty" type="number" class="form-control  " id="exampleInputEmail1"
-                                            placeholder="Enter Quantity" value="{{ old('qty') }}">
+                                            placeholder="Enter Quantity" value="{{ $product->qty }}">
                                         @error('qty')
                                             <div class="alert alert-danger">{{ $message }}</div>
                                         @enderror
@@ -85,7 +86,7 @@
                                     <div class="form-group">
                                         <label for="shipping">Shipping</label>
                                         <input name="shipping" type="text" class="form-control  " id="exampleInputEmail1"
-                                            placeholder="Enter Shipping" value="{{ old('shipping') }}">
+                                            placeholder="Enter Shipping" value="{{ $product->shipping }}">
                                         @error('shipping')
                                             <div class="alert alert-danger">{{ $message }}</div>
                                         @enderror
@@ -93,7 +94,7 @@
                                     <div class="form-group">
                                         <label for="weight">Weight</label>
                                         <input name="weight" type="number" class="form-control  " id="exampleInputEmail1"
-                                            placeholder="Enter Weight" value="{{ old('weight') }}">
+                                            placeholder="Enter Weight" value="{{ $product->weight }}">
                                         @error('weight')
                                             <div class="alert alert-danger">{{ $message }}</div>
                                         @enderror
@@ -101,7 +102,7 @@
                                     <div class="form-group">
                                         <label for="description">Description</label>
                                         <textarea rows="3" name="description" type="text" class="form-control  " id="description"
-                                            placeholder="Enter Description" value="{{ old('description') }}"></textarea>
+                                            placeholder="Enter Description" value="{{ $product->description }}">{{ $product->description }}</textarea>
                                         @error('description')
                                             <div class="alert alert-danger">{{ $message }}</div>
                                         @enderror
@@ -109,7 +110,7 @@
                                     <div class="form-group">
                                         <label for="information">Information</label>
                                         <textarea name="information" type="text" class="form-control  " rows="3" id="information"
-                                            placeholder="Enter Information" value="{{ old('information') }}"></textarea>
+                                            placeholder="Enter Information" value="{{ old('information') }}">{{ $product->information }}</textarea>
                                         @error('information')
                                             <div class="alert alert-danger">{{ $message }}</div>
                                         @enderror
@@ -127,9 +128,9 @@
                                         <label>Status</label>
                                         <select class="custom-select" name="status">
                                             <option value="">---Please Select---</option>
-                                            <option {{ old('status') === '1' ? 'selected' : '' }} value="1">Show
+                                            <option {{ $product->status === 1 ? 'selected' : '' }} value="1">Show
                                             </option>
-                                            <option {{ old('status') === '0' ? 'selected' : '' }} value="0">Hide
+                                            <option {{ $product->status === 0 ? 'selected' : '' }} value="0">Hide
                                             </option>
                                         </select>
                                         @error('status')
