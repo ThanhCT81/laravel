@@ -30,7 +30,8 @@
                             </div>
                             <!-- /.card-header -->
                             <!-- form start -->
-                            <form role="form" enctype="multipart/form-data" method="post" action="{{ route('admin.product.store') }}">
+                            <form role="form" enctype="multipart/form-data" method="post"
+                                action="{{ route('admin.product.store') }}">
                                 @csrf
                                 <div class="card-body">
                                     <div class="form-group">
@@ -170,7 +171,11 @@
 @section('js-custom')
     <script>
         ClassicEditor
-            .create(document.querySelector('#short_description'))
+            .create(document.querySelector('#short_description'), {
+                ckfinder: {
+                    uploadUrl: '{{ route('admin.product.image.upload') . '?_token=' . csrf_token() }}',
+                }
+            })
             .catch(error => {
                 console.error(error);
             });

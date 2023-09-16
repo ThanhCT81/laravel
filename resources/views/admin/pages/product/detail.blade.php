@@ -31,7 +31,8 @@
                             <!-- /.card-header -->
                             <!-- form start -->
                             <form role="form" enctype="multipart/form-data" method="post"
-                                action="{{ route('admin.product.store') }}">
+                                action="{{ route('admin.product.update', ['product' => $product->id]) }}">
+                                @method('put')
                                 @csrf
                                 <div class="card-body">
                                     <div class="form-group">
@@ -142,7 +143,10 @@
                                         <select class="custom-select" name="product_category_id">
                                             <option value="">---Please Select---</option>
                                             @foreach ($productCategories as $productCategory)
-                                                <option value="{{ $productCategory->id }}">{{ $productCategory->name }}
+                                                <option
+                                                    {{ $productCategory->id == $product->product_category_id ? 'selected' : '' }}
+                                                    value="{{ $productCategory->id }}">
+                                                    {{ $productCategory->name }}
                                                 </option>
                                             @endforeach
                                         </select>

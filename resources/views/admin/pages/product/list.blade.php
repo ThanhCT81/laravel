@@ -60,6 +60,7 @@
                                             <th>Status</th>
                                             <th>Short Description</th>
                                             <th>Image</th>
+                                            <th>Product_category_name</th>
                                             <th>Created At</th>
                                             <th>Updated At</th>
                                             {{-- <th>Action</th> --}}
@@ -84,6 +85,7 @@
                                                             : asset('images/' . $product->image);
                                                 @endphp
                                                 <td><img src="{{ $imageLinks }}" width="150px" alt=""></td>
+                                                <td>{{ $product->product_category_name }}</td>
                                                 <td>{{ $product->created_at }}</td>
                                                 <td>{{ $product->updated_at }}</td>
                                                 <td>

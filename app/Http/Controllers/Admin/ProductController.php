@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +19,13 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = DB::table('products')->paginate(1);
+
+        $products = DB::table('products')
+            ->select('products.*', 'product_categories.name as product_category_name')
+            ->leftJoin('product_categories', 'products.product_category_id', '=', 'product_categories.id')
+            ->orderBy('created_at', 'desc')
+            ->paginate(2);
+
         return view('admin.pages.product.list', ['products' => $products]);
     }
 
@@ -88,9 +95,41 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateProductRequest $request, string $id)
     {
-        //
+        $product = DB::table('products')->find($id);
+        $oldImageFileName = $product->image;
+
+        if ($request->hasFile('image')) {
+            $fileOriginalName = $request->file('image')->getClientOriginalName();
+            $fileName = pathinfo($fileOriginalName, PATHINFO_FILENAME);
+            $fileName .= '_' . time() . '.' . $request->file('image')->getClientOriginalExtension();
+            $request->file('image')->move(public_path('images'), $fileName);
+
+            if (!is_null($oldImageFileName) && file_exists('images/' . $oldImageFileName)) {
+                unlink('images/' . $oldImageFileName);
+            }
+        }
+
+        $check = DB::table('products')->where('id', '=', $id)->update([
+            "name" => $request->name,
+            "slug" => $request->slug,
+            "price" => $request->price,
+            "discount_price" => $request->discount_price,
+            "short_description" => $request->short_description,
+            "qty" => $request->qty,
+            "shipping" => $request->shipping,
+            "weight" => $request->weight,
+            "description" => $request->description,
+            "information" => $request->information,
+            "image" => $request->image,
+            "status" => $request->status,
+            "product_category_id" => $request->product_category_id,
+            "image" => $fileName ?? $oldImageFileName,
+            "updated_at" => Carbon::now()
+        ]);
+        $messager = $check ? 'Cap nhat san pham thanh cong' : 'Cap nhat san pham that bai';
+        return redirect()->route('admin.product.index')->with('message', $messager);
     }
 
     /**
@@ -112,5 +151,19 @@ class ProductController extends Controller
     {
         $slug = Str::slug($request->name, '-');
         return response()->json(['slug' => $slug]);
+    }
+    public function uploadImage(Request $request)
+    {
+        if ($request->hasFile('upload')) {
+            $originName = $request->file('upload')->getClientOriginalName();
+            $fileName = pathinfo($originName, PATHINFO_FILENAME);
+            $extension = $request->file('upload')->getClientOriginalExtension();
+            $fileName = $fileName . '_' . time() . '.' . $extension;
+
+            $request->file('upload')->move(public_path('images'), $fileName);
+
+            $url = asset('images/' . $fileName);
+            return response()->json(['fileName' => $fileName, 'uploaded' => 1, 'url' => $url]);
+        }
     }
 }
