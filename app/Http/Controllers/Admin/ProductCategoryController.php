@@ -22,8 +22,7 @@ class ProductCategoryController extends Controller
 
         // $result = DB::select('select * from product_categories where name like ? order by created_at desc', ['%' . $keyword . '%']);
         $page = $request->page ?? 1;
-        $itemPerPage = 2;
-        $offset = ($page - 1) * $itemPerPage;
+        $offset = ($page - 1) * config('my-config.item-per-pages');
 
         $sqlSelect = 'select * from product_categories ';
         $paramsBinding = [];
@@ -34,14 +33,14 @@ class ProductCategoryController extends Controller
         $sqlSelect .= 'order by created_at ' . $sort;
         $sqlSelect .=  ' limit ?,?';
         $paramsBinding[] = $offset;
-        $paramsBinding[] = $itemPerPage;
+        $paramsBinding[] = config('my-config.item-per-pages');
         $productCategories = DB::select(
             $sqlSelect,
             $paramsBinding
         );
         //$productCategories = DB::select('select * from product_categories');
         $totalRecords = DB::select('select count(*) as sum from product_categories')[0]->sum;
-        $totalPage = ceil($totalRecords / $itemPerPage);
+        $totalPage = ceil($totalRecords /  config('my-config.item-per-pages'));
         return view(
             'admin.pages.product_category.list',
             [

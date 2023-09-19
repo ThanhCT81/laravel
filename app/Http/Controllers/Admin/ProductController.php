@@ -24,7 +24,7 @@ class ProductController extends Controller
             ->select('products.*', 'product_categories.name as product_category_name')
             ->leftJoin('product_categories', 'products.product_category_id', '=', 'product_categories.id')
             ->orderBy('created_at', 'desc')
-            ->paginate(2);
+            ->paginate(config('my-config.item-per-pages'));
 
         return view('admin.pages.product.list', ['products' => $products]);
     }
