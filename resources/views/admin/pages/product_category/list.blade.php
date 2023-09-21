@@ -43,6 +43,13 @@
                                                 <option {{ $sortBy === 'oldest' ? 'selected' : '' }} value="oldest">Oldest
                                                 </option>
                                             </select>
+                                            <select name="status">
+                                                <option value="">---Please Select---</option>
+                                                <option value="1">Show
+                                                </option>
+                                                <option value="0">Hide
+                                                </option>
+                                            </select>
                                             <button type="submit">Search</button>
                                         </form>
                                     </div>
@@ -92,7 +99,8 @@
                             </div>
                             <!-- /.card-body -->
                             <div class="card-footer clearfix">
-                                <ul class="pagination pagination-sm m-0 float-right">
+                                {{ $productCategories->links() }}
+                                {{-- <ul class="pagination pagination-sm m-0 float-right">
                                     <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
                                     @for ($i = 1; $i <= $totalPage; $i++)
                                         <li class="page-item {{ $i == $currentPage ? 'active' : '' }}"><a class="page-link"
@@ -100,7 +108,7 @@
                                         </li>
                                     @endfor
                                     <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
-                                </ul>
+                                </ul> --}}
                             </div>
                         </div>
                         <!-- /.card -->

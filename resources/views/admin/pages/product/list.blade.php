@@ -85,7 +85,7 @@
                                                             : asset('images/' . $product->image);
                                                 @endphp
                                                 <td><img src="{{ $imageLinks }}" width="150px" alt=""></td>
-                                                <td>{{ $product->product_category_name }}</td>
+                                                <td>{{ $product->product_category->name }}</td>
                                                 <td>{{ $product->created_at }}</td>
                                                 <td>{{ $product->updated_at }}</td>
                                                 <td>
@@ -99,6 +99,11 @@
                                                     </form>
                                                     <a class="btn btn-primary"
                                                         href="{{ route('admin.product.show', ['product' => $product->id]) }}">Edit</a>
+                                                    @if (!is_null($product->deleted_at))
+                                                        <a class="btn btn-success"
+                                                            href="{{ route('admin.product.restore', ['product' => $product->id]) }}">Restore</a>
+                                                    @endif
+
 
                                                 </td>
                                             </tr>

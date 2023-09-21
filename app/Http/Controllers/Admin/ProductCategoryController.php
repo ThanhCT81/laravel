@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductCategoryRequest;
 use App\Http\Requests\UpdateProductCategoryRequest;
+use App\Models\ProductCategory;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,38 +16,27 @@ class ProductCategoryController extends Controller
     public function index(Request $request)
     {
         //$page = $_GET['page'] ?? 1;
-        $keyword = $request->keyword;
+        $keyword = $request->keyword ?? '';
         $orderBy = $request->orderBy ?? 'lasted';
         $sort = $orderBy === 'lasted' ? 'desc' : 'asc';
+        $status = $request->status ?? '';
 
-
-        // $result = DB::select('select * from product_categories where name like ? order by created_at desc', ['%' . $keyword . '%']);
-        $page = $request->page ?? 1;
-        $offset = ($page - 1) * config('my-config.item-per-pages');
-
-        $sqlSelect = 'select * from product_categories ';
-        $paramsBinding = [];
+        $fitler = [];
         if (!empty($keyword)) {
-            $sqlSelect .= 'where name like ? ';
-            $paramsBinding[] = '%' . $keyword . '%';
+            $fitler[] = ['name', 'like', '%' . $keyword . '%'];
         }
-        $sqlSelect .= 'order by created_at ' . $sort;
-        $sqlSelect .=  ' limit ?,?';
-        $paramsBinding[] = $offset;
-        $paramsBinding[] = config('my-config.item-per-pages');
-        $productCategories = DB::select(
-            $sqlSelect,
-            $paramsBinding
-        );
-        //$productCategories = DB::select('select * from product_categories');
-        $totalRecords = DB::select('select count(*) as sum from product_categories')[0]->sum;
-        $totalPage = ceil($totalRecords /  config('my-config.item-per-pages'));
+        if ($status !== '') {
+            $fitler[] = ['status', $status];
+        }
+        //Eloquent
+        $productCategories = ProductCategory::where($fitler)
+            ->orderBy('created_at', $sort)
+            ->paginate(config('my-config.item-per-pages'));
+
         return view(
             'admin.pages.product_category.list',
             [
                 'productCategories' => $productCategories,
-                'totalPage' => $totalPage,
-                'currentPage' => $page,
                 'keyword' => $keyword,
                 'sortBy' => $orderBy
             ]
@@ -60,14 +50,20 @@ class ProductCategoryController extends Controller
     {
 
 
-        $bool = DB::insert('INSERT INTO product_categories (name, status, created_at, updated_at) VALUES (?,?,?,?)', [
-            $request->name,
-            $request->status,
-            Carbon::now(),
-            Carbon::now(),
-        ]);
+        // $bool = DB::insert('INSERT INTO product_categories (name, status, created_at, updated_at) VALUES (?,?,?,?)', [
+        //     $request->name,
+        //     $request->status,
+        //     Carbon::now(),
+        //     Carbon::now(),
+        // ]);
 
-        $message = $bool ? 'Thành Công!!!' : 'Thất Bại';
+        //Eloquent
+        $productCategory = new ProductCategory;
+        $productCategory->name = $request->name;
+        $productCategory->status = $request->status;
+        $check = $productCategory->save();
+
+        $message = $check ? 'Thành Công!!!' : 'Thất Bại';
 
         return redirect()->route('admin.product_category.list')->with('message', $message);
     }
