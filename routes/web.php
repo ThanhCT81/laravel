@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\ProductCategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -18,9 +19,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -55,10 +53,12 @@ Route::prefix('admin')->middleware('auth.admin')->name('admin.')->group(function
     Route::post('product-upload-image', [ProductController::class, 'uploadImage'])->name('product.image.upload');
 });
 
-Route::get('product-list', [HomeController::class, 'index'])->name('client.product-list');
+Route::get('/', [HomeController::class, 'index'])->name('client.product-list');
+Route::get('product/add-to-cart/{product}', [CartController::class, 'addToCart'])->name('product.add-to-cart');
+Route::get('cart', [CartController::class, 'index'])->name('cart.index');
 
-Route::get('7up', function () {
-    return '7up';
+Route::get('check', function () {
+    dd(session()->get('cart'));
 });
 Route::get('chivas', function () {
     return 'chivas';
