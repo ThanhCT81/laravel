@@ -391,7 +391,10 @@
                     method: "GET",
                     url: url,
                     success: function(res) {
-                        alert(res.msg)
+                        Swal.fire({
+                            icon: 'success',
+                            title: res.msg,
+                        })
                     }
                 });
             });

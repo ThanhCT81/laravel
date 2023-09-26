@@ -23,12 +23,40 @@ class CartController extends Controller
             'image' => $imageLinks,
             'name' => $product->name
         ];
+        $totalItem = count($cart);
+        $totalPrice = $this->calculatePrice($cart);
+
         session()->put('cart', $cart);
-        return response()->json(['msg' => 'add to cart successfully!!!']);
+        return response()->json(['msg' => 'add to cart successfully!!!','totalPrice'=> $totalPrice,'totalItem'=> $totalItem]);
+    }
+    public function calculatePrice($cart): float{
+        $total = 0;
+        foreach($cart as $item){
+            $total += $item['qty'] * $item['price'];
+        }
+        return $total
     }
     public function index()
     {
         $cart = session()->get('cart') ?? [];
         return view('client.pages.cart', ['cart' => $cart]);
+    }
+    public function deleteItem($productId)
+    {
+        $cart = session()->get('cart', []);
+        if (array_key_exists($productId, $cart)) {
+            unset($cart[$productId]);
+            session()->put('cart', $cart);
+        }
+        return response()->json(['msg' => 'Delete Item Success']);
+    }
+    public function updateItem($productId, $qty)
+    {
+        $cart = session()->get('cart', []);
+        if (array_key_exists($productId, $cart)) {
+            $cart[$productId]['qty'] = $qty;
+            session()->put('cart', $cart);
+        }
+        return response()->json(['msg' => 'Update Item Success']);
     }
 }

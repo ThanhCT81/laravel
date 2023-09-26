@@ -35,10 +35,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($cart as $item)
-                                    <tr>
+                                @foreach ($cart as $productID => $item)
+                                    <tr id="{{ $productID }}">
                                         <td class="shoping__cart__item">
-                                            <img src="img/cart/cart-1.jpg" alt="">
+                                            <img src="{{ $item['image'] }}" alt="">
                                             <h5>{{ $item['name'] }}</h5>
                                         </td>
                                         <td class="shoping__cart__price">
@@ -46,8 +46,10 @@
                                         </td>
                                         <td class="shoping__cart__quantity">
                                             <div class="quantity">
-                                                <div class="pro-qty">
-                                                    <input type="text" value="{{ $item['qty'] }}">
+                                                <div class="pro-qty" data-price="{{ $item['price'] }}"
+                                                    data-id="{{ $productID }}"
+                                                    data-url="{{ route('product.update-item-from-cart', ['product' => $productID]) }}">
+                                                    <input type="text" class="qty" value="{{ $item['qty'] }}">
                                                 </div>
                                             </div>
                                         </td>
@@ -55,7 +57,9 @@
                                             ${{ $item['qty'] * $item['price'] }}
                                         </td>
                                         <td class="shoping__cart__item__close">
-                                            <span class="icon_close"></span>
+                                            <span data-id="{{ $productID }}"
+                                                data-url="{{ route('product.delete-item-from-cart', ['product' => $productID]) }}"
+                                                class="icon_close"></span>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -99,4 +103,54 @@
         </div>
     </section>
     <!-- Shoping Cart Section End -->
+@endsection
+@section('js-custom')
+    <script>
+        $(document).ready(function() {
+            $('.icon_close').on('click', function() {
+                var url = $(this).data('url');
+                var id = $(this).data('id');
+                $.ajax({
+                    method: 'get',
+                    url: url,
+                    success: function(response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: response.msg,
+                        })
+                        $('tr#' + id).empty()
+                    }
+                });
+
+            });
+            $('.qtybtn').on('click', function() {
+                var button = $(this)
+                var id = button.parent().data('id')
+
+                var qty = parseInt(button.siblings('.qty').val())
+                var url = button.parent().data('url');
+                var price = parseFloat(button.parent().data('price'));
+
+                if (button.hasClass('inc')) {
+                    qty += 1;
+                } else {
+                    qty = (qty < 0) ? 0 : (qty -= 1);
+                }
+
+                totalPrice = (qty * price)
+
+                url += '/' + qty;
+                $.ajax({
+                    method: 'GET',
+                    url: url,
+                    success: function(res) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: res.msg,
+                        })
+                    }
+                })
+            })
+        });
+    </script>
 @endsection
